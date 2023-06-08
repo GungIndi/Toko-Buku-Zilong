@@ -1,14 +1,15 @@
 //import required from model books
 const Books = require("../models/Book");
-// console.log("MASUK CONTROLLER Book");
+
 module.exports = {
+    
     viewBooks: async (req, res) => {
-        console.log("HELO2");
+
         try{
-             // wait until async process finish then take table from books database
+            //  wait until async process finish then take table from books database
             const books = await Books.find();
 
-            // create alertMessage and alertStatus variable and stored them in an object
+            // // // create alertMessage and alertStatus variable and stored them in an object
             const alertMessage = req.flash("alertMessage");
             const alertStatus = req.flash("alertStatus");
             const alert = { message: alertMessage, status: alertStatus };
@@ -18,17 +19,17 @@ module.exports = {
                 show data and call books variable above
                 render alert
             */
-            console.log("HELO");
             res.render("books",{
                 books,
                 alert,
-                title: "ZILONG",
+                title: "BOOKS",
             });
 
         } catch (error){
-            console.log("HELO1");
             // if error then redirect to /books
             res.redirect("/books");
+            
+          
         }
     },
 
@@ -50,7 +51,31 @@ module.exports = {
         }
       },
 
+      updateBooks: async (req,res) => {
+        try{
+            const {title,author,publisher,publicationYear,genre,price} = req.body;
+            const  book = await Books.findOne({title: title});
 
+            book.title = title;
+            book.author = author;
+            book.publisher = publisher;
+            book.publicationYear = publicationYear;
+            book.genre = genre;
+            book.price = price;
+
+            await book.save();
+
+            req.flash("alertMessage", "Book Data Updated!!")
+            req.flash("alertStatus", "success");
+
+            res.redirect("/books");
+        } catch (error){
+          req.flash("alertMessage", `${error.message}`);
+          req.flash("alertStatus", "danger");
+          res.redirect("/books");
+
+        }
+      },
     
     // CREATE DATA
 

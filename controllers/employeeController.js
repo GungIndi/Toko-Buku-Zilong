@@ -1,24 +1,23 @@
-//import required from model books
+// //import required from model books
 const Employees = require("../models/Employee");
-console.log("MASUK CONTROLLER Employee");
+
 module.exports = {
     viewBooks:async (req, res) => {
         try{
-            console.log("HELO2");
-             // wait until async process finish then take table from books database
+
+//              // wait until async process finish then take table from books database
             const employees = await Employees.find();
 
-            // create alertMessage and alertStatus variable and stored them in an object
+//             // create alertMessage and alertStatus variable and stored them in an object
             const alertMessage = req.flash("alertMessage");
             const alertStatus = req.flash("alertStatus");
             const alert = { message: alertMessage, status: alertStatus };
 
-            /*
-                render view from index
-                show data and call books variable above
-                render alert
-            */
-            console.log("HELO");
+//             /*
+//                 render view from index
+//                 show data and call books variable above
+//                 render alert
+//             */
             res.render("employee",{
                 employees,
                 alert,
@@ -34,13 +33,13 @@ module.exports = {
 
 
     
-    // CREATE DATA
+//     // CREATE DATA
 
-    // READ DATA
+//     // READ DATA
 
-    // UPDATE DATA
+//     // UPDATE DATA
 
-    // DELETE DATA
+//     // DELETE DATA
 
 }
 

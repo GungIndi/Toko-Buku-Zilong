@@ -1,11 +1,14 @@
-const express = require("express");
-const router = express.Router();
+var router = require("express").Router();
 
-const booksController = require("../controllers/bookController");
-// router.get("/books", function (req, res, next) {
+const bookController= require("../controllers/bookController");
+
+// router.get("/", function (req, res) {
 //     res.render("books", { title: "Books" });
 // });
 
-router.get("/books",booksController.viewBooks);
-router.post("/books", booksController.addBooks);
+router.get("/",bookController.viewBooks);
+router.post("/", bookController.addBooks);
+router.put("/", bookController.updateBooks);
+
+
 module.exports = router;

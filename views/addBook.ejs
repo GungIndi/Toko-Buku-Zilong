@@ -1,7 +1,6 @@
-<!-- Modal -->
 <div
   class="modal fade"
-  id="add-book"
+  id="addBook"
   tabindex="-1"
   role="dialog"
   aria-labelledby="exampleModalLabel"
@@ -10,7 +9,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Books</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add Book</h5>
         <button
           type="button"
           class="close"
@@ -23,13 +22,13 @@
       <form action="/books" method="POST">
         <div class="modal-body">
           <div class="form-group">
-            <label for="title">Judul</label>
+            <label for="title">Title</label>
             <input
               type="text"
               class="form-control"
               id="title"
               name="title"
-              placeholder="Enter title"
+              placeholder="Enter Title"
               required
             />
           </div>
@@ -40,7 +39,7 @@
               class="form-control"
               id="author"
               name="author"
-              placeholder="Enter author"
+              placeholder="Enter Author"
               required
             />
           </div>
@@ -56,35 +55,49 @@
             />
           </div>
           <div class="form-group">
-            <label for="title">Publication Year</label>
-            <input
-              type="number"
-              class="form-control"
-              id="publicationYear"
-              name="publicationYear"
-              placeholder="Enter publication year"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="title">Genre</label>
+            <label for="title">publicationYear</label>
             <input
               type="text"
               class="form-control"
-              id="genre"
-              name="genre"
-              placeholder="Enter genre"
+              id="publicationYear"
+              placeholder="Masukan Publication Year"
+              name="publicationYear"
               required
             />
           </div>
           <div class="form-group">
-            <label for="title">Price</label>
+            <label for="title">genre</label>
+            <div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="genre1" name="genre" value="Fantasy">
+                  <label class="form-check-label" for="genre1">Fantasy</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="genre2" name="genre" value="Science Fiction">
+                  <label class="form-check-label" for="genre2">Science Fiction</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="genre3" name="genre" value="Mystery">
+                  <label class="form-check-label" for="genre3">Mystery</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="genre4" name="genre" value="Horror">
+                  <label class="form-check-label" for="genre4">Horror</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="genre5" name="genre" value="Comedy">
+                  <label class="form-check-label" for="genre5">Comedy</label>
+                </div>
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="title">price</label>
             <input
               type="number"
               class="form-control"
               id="price"
+              placeholder="Masukan price"
               name="price"
-              placeholder="Enter price"
               required
             />
           </div>
