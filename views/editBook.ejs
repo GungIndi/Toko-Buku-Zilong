@@ -1,7 +1,7 @@
 
 <div
   class="modal fade"
-  id="editBook"
+  id="edit-modal"
   tabindex="-1"
   role="dialog"
   aria-labelledby="exampleModalLabel"
@@ -68,28 +68,14 @@
             </div>
             <div class="form-group">
               <label for="title">genre</label>
-              <div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-control genre" type="checkbox" id="genre1" name="genre" value="Fantasy">
-                    <label class="form-check-label" for="genre1">Fantasy</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-control genre" type="checkbox" id="genre2" name="genre" value="Science Fiction">
-                    <label class="form-check-label" for="genre2">Science Fiction</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-control genre" type="checkbox" id="genre3" name="genre" value="Mystery">
-                    <label class="form-check-label" for="genre3">Mystery</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-control genre" type="checkbox" id="genre4" name="genre" value="Horror">
-                    <label class="form-check-label" for="genre4">Horror</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-control genre" type="checkbox" id="genre5" name="genre" value="Comedy">
-                    <label class="form-check-label" for="genre5">Comedy</label>
-                  </div>
-                </div>
+              <input
+                type="text"
+                class="form-control genre"
+                id="genre"
+                placeholder="Masukan genre"
+                name="genre"
+                required
+              />
             </div>
             <div class="form-group">
               <label for="title">price</label>

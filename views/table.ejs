@@ -14,7 +14,7 @@
         
         <% for(let i = 0; i < books.length; i++){ %>
             <tr>
-              <td><%= i +1 %></td>
+              <td class="text-center"><%= i +1 %></td>
               <td><%= books[i].title %></td>
               <td><%= books[i].author %></td>
               <td><%= books[i].publisher %></td>
@@ -22,23 +22,28 @@
               <td><%= books[i].genre%></td>
               <td><%= books[i].price %></td>
               <td class="text-center">
-                <form action="/books/<%= books[i].id %>?_method=DELETE" method="POST">
-                    <a
-                    href="javascript:void()"
-                    class="btn btn-outline-warning btn-sm button-update"
-                    data-id="<%= books[i].id %>"
-                    data-title="<%= books[i].title %>"
-                    data-nim="<%= books[i].author %>"
-                    data-jurusan="<%= books[i].publisher %>"
-                    data-publicationYear="<%= books[i].publicationYear %>"
-                    data-genre="<%= books[i].genre %>"
-                    data-price="<%= books[i].price %>"
-                    >Edit</a
+                  <form 
+                  action="/books/<%= books[i].id %>?_method=DELETE"
+                  method="POST"
+                  >
+                      <a
+                      href="javascript:void()"
+                      class="btn btn-warning btn-sm button-update"
+                      data-id="<%= books[i].id %>"
+                      data-title="<%= books[i].title %>"
+                      data-nim="<%= books[i].author %>"
+                      data-jurusan="<%= books[i].publisher %>"
+                      data-publicationYear="<%= books[i].publicationYear %>"
+                      data-genre="<%= books[i].genre %>"
+                      data-price="<%= books[i].price %>"
+                      >Edit</a
                   >
                     <button 
                         type="submit"
                         class="btn btn-outline-danger btn-sm"
-                        onclick="return confirm('Apa kamu yakin menghapus buku ini?');">
+                        onclick="return confirm('Apa kamu yakin menghapus buku ini?');"
+                        data-id="<%= books[i].id %>"
+                        >
                       Delete
                     </button>
                 </form>

@@ -6,13 +6,11 @@ router.get("/", function (req, res, next) {
 });
 
 const books = require("./books");
-const employees = require("./employees");
-const members = require("./members");
+const users = require("./users");
 const transactions = require("./transactions");
 
 router.use("/books", books);
-router.use("/employees", employees);
-router.use("/members", members);
+router.use("/users", users);
 router.use("/transactions", transactions);
 
 module.exports = router;
