@@ -22,41 +22,35 @@
                         <% } %>
                     </div>
                         <!-- Table of data -->
-                    <table class="table table-bordered" style="vertical-align: middle">
-                        <thead>
-                            <tr class="text-center">
-                                <th>No</th>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Publisher</th>
-                                <th>Publication Year</th>
-                                <th>Genre</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for(let i = 0; i < books.length; i++){ %>
-                                <tr>
-                                  <td><%= i +1 %></td>
-                                  <td><%= books[i].title %></td>
-                                  <td><%= books[i].author %></td>
-                                  <td><%= books[i].publisher %></td>
-                                  <td><%= books[i].publicationYear %></td>
-                                  <td><%= books[i].genre%></td>
-                                  <td><%= books[i].price %></td>
-                                  <td class="text-center">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                                      Delete
-                                    </button>
-                                  </td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
+                    <div class="col-auto col-lg-12 mt-2"><%- include('table.ejs') %></div>
                 </div>
             </main>
         </div>
         <%- include('./addBook.ejs') %>
+        <%- include('./editBook.ejs') %>
         <%- include('./partials/js.ejs') %>
+
+        <script>
+            $("#dataTable").on("click", ".button-update", function () {
+             
+              let id = $(this).data("id");
+              let title = $(this).data("title");
+              let author = $(this).data("author");
+              let publisher = $(this).data("publisher");
+              let publicationYear = $(this).data("publicationYear");
+              let genre = $(this).data("genre");
+              let price = $(this).data("price");
+
+              $("#editBook").modal("show");
+
+              $(".id").val(id);
+              $(".title").val(title);
+              $(".author").val(author);
+              $(".publisher").val(publisher);
+              $(".publicationYear").val(publicationYear);
+              $(".genre").val(genre);
+              $(".price").val(price);
+            });
+          </script>
     </body>
 </html>
