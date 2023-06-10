@@ -55,23 +55,14 @@ module.exports = {
   
       updateBooks: async (req,res) => {
         try{
-            const { id, title,author,publisher,publicationYear,genre,price } = req.body;
-            const  book = await Books.findOne({ _id: id });
-
-            book.title = title;
-            book.author = author;
-            book.publisher = publisher;
-            book.publicationYear = publicationYear;
-            book.genre = genre;
-            book.price = price;
-
-            await book.save();
+            const  book = await Books.findOneAndUpdate({_id: req.params.id}, req.body );
 
             req.flash("alertMessage", "Book Data Updated!!")
             req.flash("alertStatus", "success");
 
             res.redirect("/books");
         } catch (error){
+          console.log(error);
           req.flash("alertMessage", `${error.message}`);
           req.flash("alertStatus", "danger");
           res.redirect("/books");
@@ -85,8 +76,7 @@ module.exports = {
         try {
 
           const { id } = req.params;
-          const book = await Books.findOne({ _id: id });
-          await book.remove();
+          await Books.deleteOne({ _id: id });
           req.flash("alertMessage", "Book Deleted!!");
           req.flash("alertStatus", "warning");
           res.redirect("/books");
@@ -97,5 +87,5 @@ module.exports = {
         }
       }
 
-}
+}                                                                                                                                                     
 
