@@ -1,106 +1,103 @@
-    <!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <%- include('./partials/head.ejs', { title }) %>
-        <link
-            rel="stylesheet"
-            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-            crossorigin="anonymous"
-        />
-        </head>
-        <body>
-            <div class="d-flex">
-                <%- include('./partials/sidebar.ejs') %>
-                <main class="d-flex flex-column align-items-center" style="width: 100%">
-                    <h1 class="fw-bold my-3"><%= title %></h1>
-                    <div class="table-container" style="width: 80%">
-                        <!-- Alert -->
-                        <div class="col-auto col-lg-12 mt-2">
-                            <% if(alert.message != "") { %>
-                                <div class="alert alert-<%= alert.status %>" role="alert">
-                                    <%= alert.message %>
-                                </div>
-                            <% } %>
-                        </div>
-                        
-                        <!-- Button trigger modal -->
-                        <button
-                          type="button"
-                          class="btn btn-outline-primary btn-sm"
-                          data-toggle="modal"
-                          data-target="#add-modal"
-                          style="margin-bottom: 5px;"
-                        >
-                        <i class="fs-5 bi bi-plus"></i>
-                        </button>
-                            <!-- Table of data -->
-                            <table 
-                                class="table table-bordered " 
-                                style="vertical-align: middle" 
-                                id="dataTable"
-                                width="100%"
-                                cellspacing="0"
-                            >
-                                <thead>
-                                    <tr class="text-center">
-                                        <th>No</th>
-                                        <th>Title</th>
-                                        <th>Author</th>
-                                        <th>Publisher</th>
-                                        <th>Publication Year</th>
-                                        <th>Genre</th>
-                                        <th>Price</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    
-                                    <% for(let i = 0; i < books.length; i++){ %>
-                                        <tr>
-                                          <td class="text-center"><%= i +1 %></td>
-                                          <td><%= books[i].title %></td>
-                                          <td><%= books[i].author %></td>
-                                          <td><%= books[i].publisher %></td>
-                                          <td><%= books[i].publicationYear %></td>
-                                          <td><%= books[i].genre%></td>
-                                          <td><%= books[i].price %></td>
-                                          <td class="text-center">
-
-                                            <!-- EDIT BOOK -->
-                                            <button
-                                              type = "button"
-                                              class="btn btn-outline-warning btn-sm button-update"
-                                              data-bs-toggle="modal"
-                                              data-bs-target="#edit-modal-<%= books[i]._id %>"
-                                              >Edit
-                                            </button>
-                                            <%- include('./books/editBook.ejs', { book: books[i]}) %>
-
-                                            <!-- DELETE BOOK -->
-                                              <form 
-                                              action="/books/<%= books[i]._id %>?_method=DELETE"
-                                              method="POST"
-                                              >
-                                                <button 
-                                                    type="submit"
-                                                    class="btn btn-outline-danger btn-sm"
-                                                    onclick="return confirm('Apa kamu yakin menghapus buku ini?');"
-                                                    >
-                                                  Delete
-                                                </button>
-                                            </form>
-                                          </td>
-                                        </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                    </div>
-                </main>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs', { title }) %>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="d-flex">
+      <%- include('./partials/sidebar.ejs') %>
+      <main class="d-flex flex-column align-items-center" style="width: 100%">
+        <h1 class="fw-bold my-3"><%= title %></h1>
+        <div class="table-container" style="width: 80%">
+          <!-- Alert -->
+          <div class="col-auto col-lg-12 mt-2">
+            <% if(alert.message != "") { %>
+            <div class="alert alert-<%= alert.status %>" role="alert">
+              <%= alert.message %>
             </div>
-            <!-- ADD BOOK -->
-            <%- include('./books/addBook.ejs') %>
+            <% } %>
+          </div>
 
-            <%- include('./partials/js.ejs') %>
-        </body>
-    </html>
+          <!-- Button trigger modal -->
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            data-toggle="modal"
+            data-target="#add-modal"
+            style="margin-bottom: 5px"
+          >
+            <i class="fs-5 bi bi-plus"></i>
+          </button>
+          <!-- Table of data -->
+          <table
+            class="table table-bordered"
+            style="vertical-align: middle"
+            id="dataTable"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead>
+              <tr class="text-center">
+                <th>No</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publisher</th>
+                <th>Publication Year</th>
+                <th>Genre</th>
+                <th>Price</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let i = 0; i < books.length; i++){ %>
+              <tr>
+                <td class="text-center"><%= i +1 %></td>
+                <td><%= books[i].title %></td>
+                <td><%= books[i].author %></td>
+                <td><%= books[i].publisher %></td>
+                <td><%= books[i].publicationYear %></td>
+                <td><%= books[i].genre%></td>
+                <td><%= books[i].price %></td>
+                <td class="text-center">
+                  <!-- EDIT BOOK -->
+                  <button
+                    type="button"
+                    class="btn btn-outline-warning btn-sm button-update"
+                    data-bs-toggle="modal"
+                    data-bs-target="#edit-modal-<%= books[i]._id %>"
+                  >
+                    Edit
+                  </button>
+                  <%- include('./books/editBook.ejs', { book: books[i]}) %>
+
+                  <!-- DELETE BOOK -->
+                  <form
+                    action="/books/<%= books[i]._id %>?_method=DELETE"
+                    method="POST"
+                  >
+                    <button
+                      type="submit"
+                      class="btn btn-outline-danger btn-sm"
+                      onclick="return confirm('Apa kamu yakin menghapus buku ini?');"
+                    >
+                      Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+    <!-- ADD BOOK -->
+    <%- include('./books/addBook.ejs') %> <%- include('./partials/js.ejs') %>
+  </body>
+</html>

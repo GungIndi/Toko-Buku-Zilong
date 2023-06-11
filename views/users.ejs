@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <%- include('./partials/head.ejs', { title }) %>
     <link
@@ -10,322 +10,97 @@
     />
   </head>
   <body>
-    <div class="container mt-5">
-      <h2 class="text-center">USER</h2>
-      <div class="row mt-3">
-        <!-- Alert -->
-        <div class="col-auto col-lg-12 mt-2">
-          <% if(alert.message != "") { %>
-          <div class="alert alert-<%= alert.status %>" role="alert">
-            <%= alert.message %>
-          </div>
-          <% } %>
-        </div>
-        <!-- Table -->
-        <div class="col-auto col-lg-12 mt-2">
-            <!-- DataTales Example -->
-<div class="card shadow mb-4">
-
-    <div class="card-header py-3">
-      <!-- Button trigger modal -->
-      <button
-        type="button"
-        class="btn btn-outline-primary btn-sm"
-        data-toggle="modal"
-        data-target="#add-modal"
-      >
-        Add
-      </button>
-        </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table
-                class="table table-bordered"
-                id="dataTable"
-                width="100%"
-                cellspacing="0"
-              >
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Role</th>
-                    <th>Address</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% for(let i = 0; i < users.length; i++){ %>
-                  <tr>
-                    <td><%= i +1 %></td>
-                    <td><%= users[i].firstName %></td>
-                    <td><%= users[i].lastName %></td>
-                    <td><%= users[i].role %></td>
-                    <td><%= users[i].address %></td>
-                    <td><%= users[i].phone %></td>
-                    <td><%= users[i].email%></td>
-                    <td class="text-center">
-                      <form
-                        action="/users/<%= users[i].id %>?_method=DELETE"
-                        method="POST"
-                      >
-                        <a
-                          href="javascript:void()"
-                          class="btn btn-outline-warning btn-sm button-update"
-                          data-id="<%= users[i].id %>"
-                          data-firstName="<%= users[i].firstName %>"
-                          data-lastName="<%= users[i].lastName %>"
-                          data-role="<%= users[i].role %>"
-                          data-address="<%= users[i].address %>"
-                          data-phone="<%= users[i].phone %>"
-                          data-email="<%= users[i].email %>"
-                          >Edit</a
-                        >
-                        <button
-                          type="submit"
-                          class="btn btn-outline-danger btn-sm"
-                          onclick="return confirm('Apa kamu yakin ingin menghapus aku dari ingatan kamu?');"
-                        >
-                          Delete
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                  <% } %>
-                </tbody>
-              </table>
+    <div class="d-flex">
+      <%- include('./partials/sidebar.ejs') %>
+      <main class="d-flex flex-column align-items-center" style="width: 100%">
+        <h1 class="fw-bold my-3"><%= title %></h1>
+        <div class="table-container" style="width: 80%">
+          <!-- Alert -->
+          <div class="col-auto col-lg-12 mt-2">
+            <% if(alert.message != "") { %>
+            <div class="alert alert-<%= alert.status %>" role="alert">
+              <%= alert.message %>
             </div>
+            <% } %>
           </div>
-        </div>
-        </div>
-      </div>
-    </div>
-    <!-- Add Modal -->
-    <!-- Modal -->
-    <div
-    class="modal fade"
-    id="add-modal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-    >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+
+          <!-- Button trigger modal -->
           <button
             type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
+            class="btn btn-outline-primary btn-sm"
+            data-toggle="modal"
+            data-target="#add-modal"
+            style="margin-bottom: 5px"
           >
-            <span aria-hidden="true">&times;</span>
+            <i class="fs-5 bi bi-plus"></i>
           </button>
-        </div>
-        <form action="/users" method="POST">
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="name">First Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="firstName"
-                name="firstName"
-                placeholder="Enter First Name"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="name">Last Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="lastName"
-                name="lastName"
-                placeholder="Enter Last Name"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="name">Role</label>
-              <input
-                type="text"
-                class="form-control"
-                id="role"
-                name="role"
-                placeholder="Enter Role"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="name">Address</label>
-              <textarea
-                class="form-control"
-                id="exampleFormControlTextarea1"
-                placeholder="Masukan Address"
-                name="Address"
-                rows="3"
-              ></textarea>
-            </div>
-            <div class="form-group">
-                <label for="name">Phone</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="phone"
-                  name="phone"
-                  placeholder="Enter Phone"
-                  required
-                />
-            </div>
-            <div class="form-group">
-                <label for="name">Email</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="email"
-                  name="email"
-                  placeholder="Enter Email"
-                  required
-                />
-              </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-              Close
-            </button>
-            <button type="submit" class="btn btn-primary">Add</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    </div>
-
-    <!-- Edit Modal -->
-
-    <div
-    class="modal fade"
-    id="edit-modal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-    >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
+          <!-- Table of data -->
+          <table
+            class="table table-bordered"
+            style="vertical-align: middle"
+            id="dataTable"
+            width="100%"
+            cellspacing="0"
           >
-            <span aria-hidden="true">&times;</span>
-          </button>
+            <thead>
+              <tr class="text-center">
+                <th>No</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Username</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let i = 0; i < users.length; i++){ %>
+              <tr>
+                <td class="text-center"><%= i +1 %></td>
+                <td><%= users[i].name %></td>
+                <td><%= users[i].address %></td>
+                <td><%= users[i].phone %></td>
+                <td><%= users[i].email %></td>
+                <td><%= users[i].isActive%></td>
+                <td><%= users[i].userType %></td>
+                <td><%= users[i].username%></td>
+                <!-- <td><%= users[i].password %></td> -->
+                <td class="text-center">
+                  <!-- EDIT BOOK -->
+                  <button
+                    type="button"
+                    class="btn btn-outline-warning btn-sm button-update"
+                    data-bs-toggle="modal"
+                    data-bs-target="#edit-modal-<%= users[i]._id %>"
+                  >
+                    Edit
+                  </button>
+                  <%- include('./users/editUser.ejs', { user: users[i]}) %>
+
+                  <!-- DELETE BOOK -->
+                  <form
+                    action="/users/<%= users[i]._id %>?_method=DELETE"
+                    method="POST"
+                  >
+                    <button
+                      type="submit"
+                      class="btn btn-outline-danger btn-sm"
+                      onclick="return confirm('Apa kamu yakin menghapus user ini?');"
+                    >
+                      Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
         </div>
-        <form action="/users?_method=PUT" method="POST">
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="name">First Name</label>
-              <input
-                type="text"
-                class="form-control firstName"
-                name="firstName"
-                nama="Enter firstName"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="name">Last Name</label>
-              <input
-                type="text"
-                class="form-control lastName"
-                name="lastName"
-                nama="Enter lastName"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="name">Role</label>
-              <input
-                type="text"
-                class="form-control role"
-                name="role"
-                nama="Enter Role"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="name">Address</label>
-              <textarea
-                type="text"
-                class="form-control address"
-                name="address"
-                nama="Enter Address"
-                rows="3"
-                required
-              ></textarea>
-            </div>
-            <div class="form-group">
-                <label for="name">Phone</label>
-                <input
-                  type="text"
-                  class="form-control phone"
-                  name="phone"
-                  nama="Enter Phone"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label for="name">Email</label>
-                <input
-                  type="text"
-                  class="form-control email"
-                  name="email"
-                  nama="Enter Email"
-                  required
-                />
-              </div>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" class="id" name="id" />
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-              Close
-            </button>
-            <button type="submit" class="btn btn-primary">Update</button>
-          </div>
-        </form>
-      </div>
+      </main>
     </div>
-    </div>
-    
-    <%- include('./partials/js.ejs') %>
-
-    <script>
-
-      $("#dataTable").on("click", ".button-update", function () {
-    
-        let id = $(this).data("id");
-        let firstName = $(this).data("firstName");
-        let lastName = $(this).data("lastName");
-        let role = $(this).data("role");
-        let address = $(this).data("address");
-        let phone = $(this).data("phone");
-        let email = $(this).data("email");
-
-        $("#edit-modal").modal("show");
-        $(".id").val(id);
-        $(".firstName").val(firstName);
-        $(".lastName").val(lastName);
-        $(".role").val(role);
-        $(".address").val(address);
-        $(".phone").val(phone);
-        $(".email").val(email);number
-      });
-    </script>
+    <!-- ADD BOOK -->
+    <%- include('./users/addUser.ejs') %> <%- include('./partials/js.ejs') %>
   </body>
 </html>
