@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {ensureAuthenticated} = require("../config/requireAuth.js")
+const ensureAuthenticated = require("../config/requireAuth.js");
 
-router.get('/',ensureAuthenticated,(req, res) => {
+router.get('/',ensureAuthenticated.ensureAuthenticated,(req, res) => {
+    console.log(req.user.userType);
     res.render('index',{
         user: req.user,
         title: "HOME"

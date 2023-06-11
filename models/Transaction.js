@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const transactionSchema = mongoose.Schema({
     memberId: mongoose.ObjectId,
-    employeeId: {
+    adminId: {
         type: mongoose.ObjectId,
         required: true,
     },
@@ -11,11 +11,7 @@ const transactionSchema = mongoose.Schema({
             bookId: {
                 type: mongoose.ObjectId,
                 required: true,
-            },
-            bookId: {
-                type: mongoose.ObjectId,
-                required: true,
-            },
+            }
         },
     ],
 });

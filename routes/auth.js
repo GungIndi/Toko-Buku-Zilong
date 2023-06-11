@@ -3,7 +3,6 @@ const router = express.Router();
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const User = require("../models/User");
-const {ensureAuthenticated} = require("../config/requireAuth.js");
 
 //login handle
 router.get('/login',(req,res)=>{
