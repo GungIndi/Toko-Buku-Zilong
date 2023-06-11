@@ -52,6 +52,39 @@ module.exports = {
   },
 
   // PUT
+
+  updateTransaction: async (req, res) => {
+    try {
+      const { adminId, memberId, bookId, quantity } = req.body;
+      const book = await Books.findOne({ _id: bookId });
+          
+      // Calculate the totalPrice
+      const price = book ? book.price : 0;
+      const totalPrice = price * parseInt(quantity);
+          
+      req.body.adminId = adminId;
+      req.body.memberId = memberId;
+      req.body.bookId = bookId;
+      req.body.price = price;
+      req.body.quantity = quantity;
+      req.body.totalPrice = totalPrice;
+          
+      const transaction = await Transactions.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body,
+        { new: true }
+      );
+      req.flash("alertMessage", "Transaction Updated!!");
+      req.flash("alertStatus", "success");
+      res.redirect("/transactions");
+    } catch (error) {
+      console.log(error);
+      req.flash("alertMessage", `${error.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/transactions");
+    }
+  },
+
   // DELETE
   deleteTransaction: async (req, res) => {
     try {

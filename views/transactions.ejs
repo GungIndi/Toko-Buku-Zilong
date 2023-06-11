@@ -74,11 +74,13 @@
                     <% const bookk = books.find((book) => book._id.toString() === transactions[i].bookId.toString()); %>
                     <%= bookk ? book.price : '' %>
                 </td>
-                <td><%= transactions[i].price %></td>
                 <td><%= transactions[i].quantity%></td>
                 <td><%= (book ? book.price : 0) * transactions[i].quantity %></td>
                 <td class="text-center">
+
                   <!-- EDIT TRANSACTION -->
+                  <%- include('./transactions/editTransaction.ejs', { transaction: transactions[i], book: books[i]}) %>
+                  
                   <button
                     type="button"
                     class="btn btn-outline-warning btn-sm button-update"
