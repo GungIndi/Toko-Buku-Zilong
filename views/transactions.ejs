@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs', { title }) %>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="d-flex">
+      <%- include('./partials/sidebar.ejs') %>
+      <main class="d-flex flex-column align-items-center" style="width: 100%">
+        <h1 class="fw-bold my-3"><%= title %></h1>
+        <div class="table-container" style="width: 80%">
+          <!-- Alert -->
+          <div class="col-auto col-lg-12 mt-2">
+            <% if(alert.message != "") { %>
+            <div class="alert alert-<%= alert.status %>" role="alert">
+              <%= alert.message %>
+            </div>
+            <% } %>
+          </div>
+
+          <!-- Button trigger modal -->
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            data-toggle="modal"
+            data-target="#add-modal"
+            style="margin-bottom: 5px"
+          >
+            <i class="fs-5 bi bi-plus"></i>
+          </button>
+          <!-- Table of data -->
+          <table
+            class="table table-bordered"
+            style="vertical-align: middle"
+            id="dataTable"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead>
+              <tr class="text-center">
+                <th>No</th>
+                <th>Member</th>
+                <th>Admin</th>
+                <th>Book</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let i = 0; i < transactions.length; i++){ %>
+              <tr>
+                <td class="text-center"><%= i +1 %></td>
+                <td>
+                    <% const member = users.find((user) => user._id.toString() === transactions[i].memberId.toString() && user.userType === 'Member'); %>
+                    <%= member ? member.name : '' %>
+                </td>
+                <td>
+                    <% const admin = users.find((user) => user._id.toString() === transactions[i].adminId.toString() && user.userType === 'Admin'); %>
+                    <%= admin ? admin.name : '' %>
+                </td>
+                <td>
+                    <% const book = books.find((book) => book._id.toString() === transactions[i].bookId.toString()); %>
+                    <%= book ? book.title : '' %>
+                </td>
+                <td>
+                    <% const bookk = books.find((book) => book._id.toString() === transactions[i].bookId.toString()); %>
+                    <%= bookk ? book.price : '' %>
+                </td>
+                <td><%= transactions[i].price %></td>
+                <td><%= transactions[i].quantity%></td>
+                <td><%= (book ? book.price : 0) * transactions[i].quantity %></td>
+                <td class="text-center">
+                  <!-- EDIT TRANSACTION -->
+                  <button
+                    type="button"
+                    class="btn btn-outline-warning btn-sm button-update"
+                    data-bs-toggle="modal"
+                    data-bs-target="#edit-modal-<%= transactions[i]._id %>"
+                  >
+                    Edit
+                  </button>
+
+
+                  <!-- DELETE BOOK -->
+                  <form
+                    action="/transactions/<%= transactions[i]._id %>?_method=DELETE"
+                    method="POST"
+                  >
+                    <button
+                      type="submit"
+                      class="btn btn-outline-danger btn-sm"
+                      onclick="return confirm('Apa kamu yakin menghapus user ini?');"
+                    >
+                      Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+    <!-- ADD BOOK -->
+    <%- include('./transactions/addTransaction.ejs') %> 
+    <%- include('./partials/js.ejs') %>
+  </body>
+</html>
