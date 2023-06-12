@@ -14,6 +14,7 @@ module.exports = {
         books,
         alert,
         title: "BOOKS",
+        userType: req.user.userType
       });
     } catch (error) {
       res.redirect("/books");

@@ -11,7 +11,7 @@ module.exports = {
     if (req.isAuthenticated() && req.user.userType === "Admin" && req.user.isActive === "Active") {
       return next();
     }
-    req.flash("alertMessage", "Success add data Books");
+    req.flash("error_msg", "You're Not Admin!");
     res.redirect("/login");
   }
 };

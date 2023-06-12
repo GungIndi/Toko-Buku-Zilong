@@ -17,6 +17,7 @@ module.exports = {
         users,
         alert,
         title: "USERS", 
+        userType: req.user.userType
       });
       
     } catch (error) {
@@ -41,10 +42,10 @@ module.exports = {
           //save pass to hash
           password = hash;
           Users.create({ name, address, phone, email,  isActive, userType, username, password  });
+          req.flash("alertMessage", "Success add data Users");
+          req.flash("alertStatus", "success");
+          res.redirect("/users");
       }));
-      req.flash("alertMessage", "Success add data Users");
-      req.flash("alertStatus", "success");
-      res.redirect("/users");
     }catch (error) {
       req.flash("alertMessage", `${error.message}`);
       req.flash("alertStatus", "danger");

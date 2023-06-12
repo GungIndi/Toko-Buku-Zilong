@@ -40,7 +40,8 @@ router.post('/register',(req,res)=>{
         isActive : isActive,
         userType : userType,
         username : username,
-        password : password})
+        password : password,
+        title: "Register"});
      } else {
 
         const newUser = new User({

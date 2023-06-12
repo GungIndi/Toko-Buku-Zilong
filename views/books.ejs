@@ -11,7 +11,7 @@
   </head>
   <body>
     <div class="d-flex">
-      <%- include('./partials/sidebar.ejs') %>
+      <%- include('./partials/sidebar.ejs', { userType }) %>
       <main class="d-flex flex-column align-items-center" style="width: 100%">
         <h1 class="fw-bold my-3"><%= title %></h1>
         <div class="table-container" style="width: 80%">

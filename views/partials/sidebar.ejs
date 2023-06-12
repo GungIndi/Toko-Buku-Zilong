@@ -16,6 +16,7 @@
                 <p class="d-inline">Books</p>
             </a>
         </li>
+        <% if (userType === "Admin") { %>
         <li class="nav-item">
             <a href="/users" class="nav-link text-white fs-5">
                 <i class="bi bi-people-fill pe-2"></i>
@@ -28,6 +29,7 @@
                 <p class="d-inline">Transactions</p>
             </a>
         </li>
+        <% } %>
     </ul>
     <hr />
     <div class="dropdown">

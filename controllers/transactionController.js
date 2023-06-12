@@ -19,6 +19,7 @@ module.exports = {
         users,
         alert,
         title: "TRANSACTIONS",
+        userType: req.user.userType
       });
     } catch (error) {
       res.redirect("/transactions");

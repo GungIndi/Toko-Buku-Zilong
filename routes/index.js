@@ -6,7 +6,8 @@ router.get('/',ensureAuthenticated.ensureAuthenticated,(req, res) => {
     console.log(req.user.userType);
     res.render('index',{
         user: req.user,
-        title: "HOME"
+        title: "HOME",
+        userType: req.user.userType
         });
 }); 
 
