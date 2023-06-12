@@ -71,12 +71,12 @@
                     <% const book = books.find((book) => book._id.toString() === transactions[i].bookId.toString()); %>
                     <%= book ? book.title : '' %>
                 </td>
-                <td>
+                <td>Rp.
                     <% const bookk = books.find((book) => book._id.toString() === transactions[i].bookId.toString()); %>
                     <%= bookk ? book.price : '' %>
                 </td>
                 <td><%= transactions[i].quantity%></td>
-                <td><%= (book ? book.price : 0) * transactions[i].quantity %></td>
+                <td>Rp.<%= (book ? book.price : 0) * transactions[i].quantity %></td>
                 <td><%= (new Date(transactions[i].createdAt)).toLocaleDateString() %>, <%= (new Date(transactions[i].createdAt)).toLocaleTimeString() %></td>
                 <td class="text-center">
 
@@ -91,7 +91,6 @@
                   >
                     Edit
                   </button>
-
 
                   <!-- DELETE BOOK -->
                   <form
