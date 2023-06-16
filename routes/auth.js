@@ -20,31 +20,13 @@ router.get('/register',(req,res)=>{
 //Register handle
 router.post('/register',(req,res)=>{
     const {name,address, phone, email, isActive, userType, username, password} = req.body;
-    let errors = [];
+    let errors = 0;
     console.log(' Name ' + name+ ' address ' + address+ ' phone ' + phone+ ' email :' + email+ ' isActive ' + isActive+ ' userType ' + userType+ ' username ' + username+' pass:' + password);
     if(!name || !address || !phone || !email || !isActive || !userType || !username || !password) {
-        errors.push({msg : "Please fill in all fields"})
-    }
-
-    //check if password is more than 6 characters
-    if(password.length < 6 ) {
-        errors.push({msg : 'password atleast 6 characters'})
-    }
-    if(errors.length > 0 ) {
-    res.render('register', {
-        errors : errors,
-        name : name,
-        address : address,
-        phone : phone,
-        email : email,
-        isActive : isActive,
-        userType : userType,
-        username : username,
-        password : password,
-        title: "Register"});
-     } else {
-
-        const newUser = new User({
+        req.flash("alertMessage", "Please fill in all fields");
+        req.flash("alertStatus", "danger");
+        res.render('register', {
+            // errors : errors,
             name : name,
             address : address,
             phone : phone,
@@ -52,36 +34,66 @@ router.post('/register',(req,res)=>{
             isActive : isActive,
             userType : userType,
             username : username,
-            password : password
-        });
-    
-        //hash password
-        bcrypt.genSalt(10,(err,salt)=> 
-        bcrypt.hash(newUser.password,salt,
-            (err,hash)=> {
-                if(err) throw err;
-                    //save pass to hash
-                    newUser.password = hash;
-                //save user
-                newUser.save()
-                .then((value)=>{
-                    console.log(value)
-                    req.flash('success_msg','You have now registered!');
-                    res.redirect('/login');
-                })
-                .catch(value=> console.log(value));
-                  
-            }));
-        }
+            password : password,
+            title: "Register"});
+        errors++;
+    }
+    console.log(errors);
+    if(password.length < 6 && errors == 0 ) {
+        req.flash("alertMessage", "Password atleast 6 characters");
+        req.flash("alertStatus", "danger");
+        res.render('register', {
+            // errors : errors,
+            name : name,
+            address : address,
+            phone : phone,
+            email : email,
+            isActive : isActive,
+            userType : userType,
+            username : username,
+            password : password,
+            title: "Register"});
+        errors++;
+    }
+    //check if password is more than 6 characters
+    const newUser = new User({
+        name : name,
+        address : address,
+        phone : phone,
+        email : email,
+        isActive : isActive,
+        userType : userType,
+        username : username,
+        password : password
     });
+
+    //hash password
+    bcrypt.genSalt(10,(err,salt)=> 
+    bcrypt.hash(newUser.password,salt,
+        (err,hash)=> {
+            if(err) throw err;
+                //save pass to hash
+                newUser.password = hash;
+            //save user
+            newUser.save()
+            .then((value)=>{
+                console.log(value);
+                req.flash("alertMessage", "You have now registered!");
+                req.flash("alertStatus", "success");
+                res.redirect('/login');
+            })
+            .catch(value=> console.log(value));
+              
+        }));
+});
 
 
 
 router.post('/login',(req,res,next)=>{
     passport.authenticate('local',{
     successRedirect : '/',
-    failureRedirect : '/login',
     failureFlash : true,
+    failureRedirect : '/login',
     })(req,res,next);
   })
 
@@ -89,7 +101,8 @@ router.post('/login',(req,res,next)=>{
 router.get('/logout',(req,res)=>{
     req.logout(function(err) {
         if (err) { return next(err); }
-        req.flash('success_msg','Now logged out');
+        req.flash("alertMessage", "You have now Logged Out!");
+        req.flash("alertStatus", "success");
         res.redirect('/login');
       });
  });

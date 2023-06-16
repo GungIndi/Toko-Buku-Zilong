@@ -23,6 +23,10 @@ const bookSchema = mongoose.Schema({
             required: true,
         },
     ],
+    stock: {
+        type: Number,
+        required: true,
+    },
     price: {
         type: Number,
         required: true,

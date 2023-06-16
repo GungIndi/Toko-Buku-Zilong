@@ -17,10 +17,10 @@
         <div class="table-container" style="width: 80%">
           <!-- Alert -->
           <div class="col-auto col-lg-12 mt-2">
-            <% if(alert.message != "") { %>
-            <div class="alert alert-<%= alert.status %>" role="alert">
-              <%= alert.message %>
-            </div>
+            <% if (typeof alertMessage !== 'undefined' && typeof alertStatus !== 'undefined') { %>
+              <div class="alert alert-<%= alertStatus %>">
+                  <%= alertMessage %>
+              </div>
             <% } %>
           </div>
 
@@ -77,7 +77,10 @@
                 </td>
                 <td><%= transactions[i].quantity%></td>
                 <td>Rp.<%= (book ? book.price : 0) * transactions[i].quantity %></td>
-                <td><%= (new Date(transactions[i].createdAt)).toLocaleDateString() %>, <%= (new Date(transactions[i].createdAt)).toLocaleTimeString() %></td>
+                <td>
+                  <%= moment(transactions[i].createdAt).locale('en').format('dddd, D MMMM YYYY HH:mm:ss') %>
+                </td>
+                <!-- <td><%= (new Date(transactions[i].createdAt)).toLocaleDateString() %>, <%= (new Date(transactions[i].createdAt)).toLocaleTimeString() %></td> -->
                 <td class="text-center">
 
                   <!-- EDIT TRANSACTION -->

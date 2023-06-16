@@ -17,11 +17,11 @@
         <div class="table-container" style="width: 80%">
           <!-- Alert -->
           <div class="col-auto col-lg-12 mt-2">
-            <% if(alert.message != "") { %>
-            <div class="alert alert-<%= alert.status %>" role="alert">
-              <%= alert.message %>
-            </div>
-            <% } %>
+            <% if (typeof alertMessage !== 'undefined' && typeof alertStatus !== 'undefined') { %>
+              <div class="alert alert-<%= alertStatus %>">
+                  <%= alertMessage %>
+              </div>
+          <% } %>
           </div>
 
           <!-- Button trigger modal -->

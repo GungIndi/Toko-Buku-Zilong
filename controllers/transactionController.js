@@ -1,6 +1,7 @@
 const Transactions = require("../models/Transaction");
 const Books = require("../models/Book");
 const Users = require("../models/User");
+const moment = require("moment");
 
 module.exports = {
   //GET
@@ -18,8 +19,10 @@ module.exports = {
         books,
         users,
         alert,
+        moment,
         title: "TRANSACTIONS",
-        userType: req.user.userType
+        userType: req.user.userType,
+        name: req.user.name
       });
     } catch (error) {
       res.redirect("/transactions");

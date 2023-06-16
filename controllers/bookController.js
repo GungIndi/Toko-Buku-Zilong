@@ -14,7 +14,8 @@ module.exports = {
         books,
         alert,
         title: "BOOKS",
-        userType: req.user.userType
+        userType: req.user.userType,
+        name: req.user.name
       });
     } catch (error) {
       res.redirect("/books");
@@ -23,8 +24,8 @@ module.exports = {
 
   // POST
   addBooks: async (req, res) => {
-    try {
-      const { title, author, publisher, publicationYear, genre, price } =
+    try { 
+      const { title, author, publisher, publicationYear, genre, stock, price } =
         req.body;
       await Books.create({
         title,
@@ -32,6 +33,7 @@ module.exports = {
         publisher,
         publicationYear,
         genre,
+        stock,
         price,
       });
       req.flash("alertMessage", "Success add data Books");

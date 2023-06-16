@@ -17,7 +17,8 @@ module.exports = {
         users,
         alert,
         title: "USERS", 
-        userType: req.user.userType
+        userType: req.user.userType,
+        name: req.user.name
       });
       
     } catch (error) {

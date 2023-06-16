@@ -7,7 +7,8 @@ router.get('/',ensureAuthenticated.ensureAuthenticated,(req, res) => {
     res.render('index',{
         user: req.user,
         title: "HOME",
-        userType: req.user.userType
+        userType: req.user.userType,
+        name: req.user.name
         });
 }); 
 

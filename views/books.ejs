@@ -17,23 +17,24 @@
         <div class="table-container" style="width: 80%">
           <!-- Alert -->
           <div class="col-auto col-lg-12 mt-2">
-            <% if(alert.message != "") { %>
-            <div class="alert alert-<%= alert.status %>" role="alert">
-              <%= alert.message %>
-            </div>
+            <% if (typeof alertMessage !== 'undefined' && typeof alertStatus !== 'undefined') { %>
+              <div class="alert alert-<%= alertStatus %>">
+                  <%= alertMessage %>
+              </div>
             <% } %>
           </div>
-
-          <!-- Button trigger modal -->
-          <button
-            type="button"
-            class="btn btn-outline-primary btn-sm"
-            data-toggle="modal"
-            data-target="#add-modal"
-            style="margin-bottom: 5px"
-          >
-            <i class="fs-5 bi bi-plus"></i>
-          </button>
+          <% if(userType === "Admin") { %>
+            <!-- Button trigger modal -->
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              data-toggle="modal"
+              data-target="#add-modal"
+              style="margin-bottom: 5px"
+            >
+              <i class="fs-5 bi bi-plus"></i>
+            </button>
+          <% } %>
           <!-- Table of data -->
           <table
             class="table table-bordered"
@@ -50,8 +51,11 @@
                 <th>Publisher</th>
                 <th>Publication Year</th>
                 <th>Genre</th>
+                <th>Stock</th>
                 <th>Price</th>
-                <th>Action</th>
+                <% if(userType === "Admin") { %>
+                  <th>Action</th>
+                <% } %>
               </tr>
             </thead>
             <tbody>
@@ -63,8 +67,10 @@
                 <td><%= books[i].publisher %></td>
                 <td><%= books[i].publicationYear %></td>
                 <td><%= books[i].genre%></td>
+                <td><%= books[i].stock%></td>
                 <td>Rp.<%= books[i].price %></td>
-                <td class="text-center">
+                <% if(userType === "Admin") { %>
+                  <td class="text-center">
                   <!-- EDIT BOOK -->
                   <button
                     type="button"
@@ -74,6 +80,7 @@
                   >
                     Edit
                   </button>
+                  
                   <%- include('./books/editBook.ejs', { book: books[i]}) %>
 
                   <!-- DELETE BOOK -->
@@ -89,6 +96,7 @@
                       Delete
                     </button>
                   </form>
+                  <% } %>
                 </td>
               </tr>
               <% } %>
