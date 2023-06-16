@@ -22,7 +22,7 @@
       <form action="/users" method="POST">
         <div class="modal-body">
           <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name" class="fw-bold">Name</label>
             <input
               type="text"
               class="form-control"
@@ -33,7 +33,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="address">Address</label>
+            <label for="address" class="fw-bold">Address</label>
             <input
               type="text"
               class="form-control"
@@ -44,7 +44,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="phone">Phone</label>
+            <label for="phone" class="fw-bold">Phone</label>
             <input
               type="text"
               class="form-control"
@@ -55,7 +55,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email" class="fw-bold">Email</label>
             <input
               type="text"
               class="form-control"
@@ -67,18 +67,18 @@
           </div>
           <div>
             <input type="radio" id="active" name="isActive" value="Active" <%= typeof isActive!= 'undefined' && isActive === 'Active' ? 'checked' : '' %> />
-            <label for="active">Active</label>
+            <label for="active" class="fw-bold">Active</label>
             <input type="radio" id="not-active" name="isActive" value="Not Active" <%= typeof isActive != 'undefined' && isActive=== 'Not Active' ? 'checked' : '' %> />
-            <label for="not-active">Not Active</label><br />
+            <label for="not-active" class="fw-bold">Not Active</label><br />
           </div>
           <div>
             <input type="radio" id="admin" name="userType" value="Admin" <%= typeof userType != 'undefined' && userType === 'Admin' ? 'checked' : '' %> />
-            <label for="admin">Admin</label>
+            <label for="admin" class="fw-bold">Admin</label>
             <input type="radio" id="member" name="userType" value="Member" <%= typeof userType != 'undefined' && userType === 'Member' ? 'checked' : '' %> />
-            <label for="member">Member</label><br />
+            <label for="member" class="fw-bold">Member</label><br />
           </div>
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username" class="fw-bold">Username</label>
             <input
               type="text"
               class="form-control"
@@ -89,7 +89,7 @@
             />
           </div>
           <div class="form-group">
-            <label for="username">Password</label>
+            <label for="username" class="fw-bold">Password</label>
             <input
               type="password"
               class="form-control"
