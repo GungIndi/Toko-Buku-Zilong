@@ -40,38 +40,66 @@
               <% } }); %>
             </select>
           </div>
-          <div class="form-group">
-            <label for="book">Book</label>
-            <select name="bookId" class="form-select">
-              <% books.forEach((book) => { %>
-              <option value="<%= book._id %>"><%= book.title %></option>
-              <% }); %>
-            </select>
+          <div id="details-container">
+            <div id="detail-1">
+              <div class="form-group">
+                <label for="book">Book</label>
+                <select name="bookId" class="form-select">
+                  <% books.forEach((book) => { %>
+                  <option value="<%= book._id %>"><%= book.title %></option>
+                  <% }); %>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="title">Quantity</label>
+                <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" required />
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="addTransactionDetail1('#edit-modal-<%= transaction._id %>')">Add Another Book</button>
+            <button type="button" class="btn btn-primary" onclick="removeTransactionDetail1('#detail-1')">Remove Details</button>
           </div>
-          <div class="form-group">
-            <label for="title">Quantity</label>
-            <input
-              type="Number"
-              class="form-control"
-              id="quantity"
-              name="quantity"
-              placeholder="Enter Quantity"
-              required
-            />
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" class="id" name="id" />
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="submit" class="btn btn-primary">Update</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" class="id" name="id" />
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Update</button>
         </div>
       </form>
     </div>
   </div>
 </div>
+<script>
+  const addTransactionDetail1 = (modalId) => {
+    const detailsContainer = $(modalId).find("#details-container");
+    const detailId = detailsContainer.children().length + 1;
+
+    const detailHtml = `
+      <div id="detail-${detailId}">
+        <div class="form-group">
+          <label for="book">Book</label>
+          <select name="bookId" class="form-select">
+            <% books.forEach((book) => { %>
+            <option value="<%= book._id %>"><%= book.title %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="title">Quantity</label>
+          <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" required />
+        </div>
+        <button type="button" class="btn btn-primary" onclick="addTransactionDetail1('${modalId}')">Add Another Book</button>
+        <button type="button" class="btn btn-primary" onclick="removeTransactionDetail1('#detail-${detailId}')">Remove Details</button>
+      </div>
+    `;
+    detailsContainer.append(detailHtml);
+  }
+
+  const removeTransactionDetail1 = (id) => $(id).remove();
+</script>
+

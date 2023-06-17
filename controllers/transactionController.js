@@ -32,23 +32,43 @@ module.exports = {
   // POST
   addTransaction: async (req, res) => {
     try {
-        const { memberId, adminId, bookId, quantity } = req.body;
-        const book = await Books.findOne({ _id: bookId});
-        const price = book ? book.price : 0;
-        const totalPrice = price * quantity;
+        const { memberId, adminId, bookId} = req.body;
+        let details = [];
+        let totalPrice = 0;
+        console.log(req.body.bookId.length);
+        if(!Array.isArray(req.body.bookId)) {
+        let book = await Books.findOne({ _id: bookId});
+          let data = {
+            bookId: book._id,
+            price: book.price,
+            quantity: req.body.quantity,
+          };
+          details.push(data);
+          totalPrice += book.price * req.body.quantity;
+        } else {
+          for (let i = 0; i < req.body.bookId.length; i++) {
+            let book = await Books.findOne({ _id: req.body.bookId[i]});
+            let data = {
+              bookId: book._id,
+              price: book.price,
+              quantity: req.body.quantity[i],
+            };
+            details.push(data);
+            totalPrice += book.price * req.body.quantity[i];
+          }
+        }
+      console.log(details.length);
       await Transactions.create({
         memberId,
         adminId,
-        bookId,
-        price,
-        quantity,
+        details,
         totalPrice,
       });
   
       req.flash("alertMessage", "Success add transaction data");
       req.flash("alertStatus", "success");
       res.redirect("/transactions");
-    } catch (error) {
+    } catch (error) { 
       req.flash("alertMessage", `${error.message}`);
       req.flash("alertStatus", "danger");
       res.redirect("/transactions");
@@ -59,21 +79,39 @@ module.exports = {
 
   updateTransaction: async (req, res) => {
     try {
-      const { adminId, memberId, bookId, quantity } = req.body;
-      const book = await Books.findOne({ _id: bookId });
-          
-      // Calculate the totalPrice
-      const price = book ? book.price : 0;
-      const totalPrice = price * parseInt(quantity);
-          
+      const { adminId, memberId, bookId } = req.body;
+      let details = [];
+      let totalPrice = 0;
+        console.log(req.body.bookId.length);
+        if(!Array.isArray(req.body.bookId)) {
+        let book = await Books.findOne({ _id: bookId});
+          let data = {
+            bookId: book._id,
+            price: book.price,
+            quantity: req.body.quantity,
+          };
+          details.push(data);
+          totalPrice += book.price * req.body.quantity;
+        } else {
+          for (let i = 0; i < req.body.bookId.length; i++) {
+            let book = await Books.findOne({ _id: req.body.bookId[i]});
+            let data = {
+              bookId: book._id,
+              price: book.price,
+              quantity: req.body.quantity[i],
+            };
+            details.push(data);
+            totalPrice += book.price * req.body.quantity[i];
+          }
+        }
+      console.log(details);
       req.body.adminId = adminId;
       req.body.memberId = memberId;
       req.body.bookId = bookId;
-      req.body.price = price;
-      req.body.quantity = quantity;
+      req.body.details = details;
       req.body.totalPrice = totalPrice;
           
-      const transaction = await Transactions.findOneAndUpdate(
+      await Transactions.findOneAndUpdate(
         { _id: req.params.id },
         req.body,
         { new: true }

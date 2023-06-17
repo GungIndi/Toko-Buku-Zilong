@@ -1,21 +1,16 @@
-<div
-  class="modal fade"
-  id="add-modal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
+<div 
+class="modal fade" 
+id="add-modal" 
+tabindex="-1" 
+role="dialog" 
+aria-labelledby="exampleModalLabel" 
+aria-hidden="true"
 >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add Transaction</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -24,47 +19,72 @@
           <div class="form-group">
             <label for="admin">Admin</label>
             <select name="adminId" class="form-select">
-              <% users.forEach((user) => {
-                if (user.userType === 'Admin') { %>
-                  <option value="<%= user._id %>"><%= user.name %></option>
+              <% users.forEach((user) => { if (user.userType === 'Admin') { %>
+              <option value="<%= user._id %>"><%= user.name %></option>
               <% } }); %>
-            </select>      
+            </select>
           </div>
-          <div class="form-group" class="form-select">
+          <div class="form-group">
             <label for="member">Member</label>
             <select name="memberId" class="form-select">
-              <% users.forEach((user) => {
-                if (user.userType === 'Member') { %>
-                  <option value="<%= user._id %>"><%= user.name %></option>
+              <% users.forEach((user) => { if (user.userType === 'Member') { %>
+              <option value="<%= user._id %>"><%= user.name %></option>
               <% } }); %>
-            </select>      
+            </select>
           </div>
-          <div class="form-group">
-            <label for="book">Book</label>
-            <select name="bookId" class="form-select">
-              <% books.forEach((book) => { %>
-                <option value="<%= book._id %>"><%= book.title %></option>
-              <% }); %>
-            </select>      
+          <div id="details-container">
+            <div id="detail-1">
+              <div class="form-group">
+                <label for="book">Book</label>
+                <select name="bookId" class="form-select">
+                  <% books.forEach((book) => { %>
+                  <option value="<%= book._id %>"><%= book.title %></option>
+                  <% }); %>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="title">Quantity</label>
+                <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" required />
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="addTransactionDetail2('#add-modal')">Add Another Book</button>
+            <button type="button" class="btn btn-primary" onclick="removeTransactionDetail2('#detail-1')">Remove Details</button>
           </div>
-          <div class="form-group">
-            <label for="title">Quantity</label>
-            <input
-              type="Number"
-              class="form-control"
-              id="quantity"
-              name="quantity"
-              placeholder="Enter Quantity"
-              required
-            />
-          </div>
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Close
-          </button>
-          <button type="submit" class="btn btn-primary">Add</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" name="submit" class="btn btn-primary">Add</button>
         </div>
       </form>
     </div>
   </div>
 </div>
+<script>
+  // let detailId = 2;
+  const addTransactionDetail2 = (modalId) => {
+    const detailsContainer = $(modalId).find("#details-container");
+    const detailId = detailsContainer.children().length + 1;
+
+    const detailHtml = `
+      <div id="detail-${detailId}">
+        <div class="form-group">
+          <label for="book">Book</label>
+          <select name="bookId" class="form-select">
+            <% books.forEach((book) => { %>
+            <option value="<%= book._id %>"><%= book.title %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="title">Quantity</label>
+          <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" required />
+        </div>
+        <button type="button" class="btn btn-primary" onclick="addTransactionDetail2('${modalId}')">Add Another Book</button>
+        <button type="button" class="btn btn-primary" onclick="removeTransactionDetail2('#detail-${detailId}')">Remove Details</button>
+      </div>
+    `;
+    detailsContainer.append(detailHtml);
+  }
+
+  const removeTransactionDetail2 = (id) => $(id).remove();
+</script>

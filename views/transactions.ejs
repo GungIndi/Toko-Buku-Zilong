@@ -36,20 +36,18 @@
           </button>
           <!-- Table of data -->
           <table
-            class="table table-bordered"
+            class="table table-bordered "
             style="vertical-align: middle"
             id="dataTable"
             width="100%"
             cellspacing="0"
           >
-            <thead>
+            <thead class="table-dark">
               <tr class="text-center">
                 <th>No</th>
                 <th>Member</th>
                 <th>Admin</th>
                 <th>Book</th>
-                <th>Price</th>
-                <th>Quantity</th>
                 <th>Total Price</th>
                 <th> Time Stamp</th>
                 <th>Action</th>
@@ -60,27 +58,31 @@
               <tr>
                 <td class="text-center"><%= i +1 %></td>
                 <td>
-                    <% const member = users.find((user) => user._id.toString() === transactions[i].memberId.toString() && user.userType === 'Member'); %>
-                    <%= member ? member.name : '' %>
-                </td>
-                <td>
-                    <% const admin = users.find((user) => user._id.toString() === transactions[i].adminId.toString() && user.userType === 'Admin'); %>
-                    <%= admin ? admin.name : '' %>
-                </td>
-                <td>
-                    <% const book = books.find((book) => book._id.toString() === transactions[i].bookId.toString()); %>
-                    <%= book ? book.title : '' %>
-                </td>
-                <td>Rp.
-                    <% const bookk = books.find((book) => book._id.toString() === transactions[i].bookId.toString()); %>
-                    <%= bookk ? book.price : '' %>
-                </td>
-                <td><%= transactions[i].quantity%></td>
-                <td>Rp.<%= (book ? book.price : 0) * transactions[i].quantity %></td>
-                <td>
-                  <%= moment(transactions[i].createdAt).locale('en').format('dddd, D MMMM YYYY HH:mm:ss') %>
-                </td>
-                <!-- <td><%= (new Date(transactions[i].createdAt)).toLocaleDateString() %>, <%= (new Date(transactions[i].createdAt)).toLocaleTimeString() %></td> -->
+                  <% const member = users.find((user) => user._id.toString() === transactions[i].memberId.toString() && user.userType === 'Member'); %>
+                  <%= member ? member.name : '' %>
+              </td>
+              <td>
+                <% const admin = users.find((user) => user._id.toString() === transactions[i].adminId.toString() && user.userType === 'Admin'); %>
+                <%= admin ? admin.name : '' %>
+              </td>
+              <td class="text-center">           
+                <button
+                  class="btn btn-link btn-details"
+                  data-toggle="modal"
+                  data-target="#details-modal-<%= i %>"
+                >
+                  View Details
+                </button>
+                <!-- Include the modal file -->
+                <%- include('./transactions/detailTransaction.ejs', { i,transaction: transactions[i], book: books[i]}) %>
+              </td>
+              
+              <td class="text-center">
+                <%= transactions[i].totalPrice %>
+              </td>
+              <td>
+                <%= moment(transactions[i].createdAt).locale('en').format('dddd, D MMMM YYYY HH:mm:ss') %>
+              </td>
                 <td class="text-center">
 
                   <!-- EDIT TRANSACTION -->
@@ -117,7 +119,22 @@
       </main>
     </div>
     <!-- ADD BOOK -->
-    <%- include('./transactions/addTransaction.ejs') %> 
+    <%- include('./transactions/addTransaction.ejs', { details: books.details }) %> 
     <%- include('./partials/js.ejs') %>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const detailsToggleButtons = document.querySelectorAll('.details-toggle');
+
+        detailsToggleButtons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            const toggleId = button.getAttribute('data-toggle-id');
+            const toggleElement = document.getElementById(toggleId);
+            if (toggleElement) {
+              toggleElement.style.display = toggleElement.style.display === 'none' ? 'block' : 'none';
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>

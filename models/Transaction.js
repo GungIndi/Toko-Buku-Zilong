@@ -10,18 +10,22 @@ const transactionSchema = mongoose.Schema(
       type: mongoose.ObjectId,
       required: true,
     },
-    bookId: {
-      type: mongoose.ObjectId,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
+    details: [
+      {
+        bookId: {
+          type: mongoose.ObjectId,
+          required: true,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
     totalPrice: {
       type: Number,
       required: true,
