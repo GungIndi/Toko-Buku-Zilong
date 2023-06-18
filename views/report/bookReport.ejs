@@ -1,92 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <%- include('../partials/head.ejs', { title }) %>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        // Initially hide the specific amount and range fields
+        $('#rangeFields').hide();
+        $('#rangeYear').hide();
+        $('#rangePrice').hide();
+        
+        // Listen for changes in the stock type select field
+        $('#stockType').change(function() {
+          var selectedOption = $(this).val();
 
-<head>
-  <%- include('../partials/head.ejs', { title }) %>
-  <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-    crossorigin="anonymous"
-  />
-</head>
+          // Show/hide the specific amount and range fields based on the selected option
+          if (selectedOption === 'specific') {
+            $('#specificAmountField').show();
+            $('#rangeFields').hide();
+          } else if (selectedOption === 'range') {
+            $('#specificAmountField').hide();
+            $('#rangeFields').show();
+          }
+        });
 
-<body>
-  <div class="d-flex">
-    <%- include('../partials/sidebar.ejs', { userType }) %>
-    <main class="d-flex flex-column align-items-center" style="width: 100%">
-      <h1 class="fw-bold my-3"><%= title %></h1>
-      <div class="table-container" style="width: 80%">
-        <!-- Alert -->
-        <div class="col-auto col-lg-12 mt-2">
-          <% if (typeof alertMessage !== 'undefined' && typeof alertStatus !== 'undefined') { %>
+        $('#yearType').change(function() {
+          var selectedOption = $(this).val();
+
+          // Show/hide the specific amount and range fields based on the selected option
+          if (selectedOption === 'specific') {
+            $('#specificYearField').show();
+            $('#rangeYear').hide();
+          } else if (selectedOption === 'range') {
+            $('#specificYearField').hide();
+            $('#rangeYear').show();
+          }
+        });
+
+        $('#priceType').change(function() {
+          var selectedOption = $(this).val();
+          // Show/hide the specific amount and range fields based on the selected option
+          if (selectedOption === 'specific') {
+            $('#specificPriceField').show();
+            $('#rangePrice').hide();
+          } else if (selectedOption === 'range') {
+            $('#specificPriceField').hide();
+            $('#rangePrice').show();
+          }
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="d-flex">
+      <%- include('../partials/sidebar.ejs', { userType }) %>
+      <main class="d-flex flex-column align-items-center" style="width: 100%">
+        <h1 class="fw-bold my-3"><%= title %></h1>
+        <div class="table-container" style="width: 80%">
+          <!-- Alert -->
+          <div class="col-auto col-lg-12 mt-2">
+            <% if (typeof alertMessage !== 'undefined' && typeof alertStatus !==
+            'undefined') { %>
             <div class="alert alert-<%= alertStatus %>">
               <%= alertMessage %>
             </div>
-          <% } %>
-        </div>
-        
-          <!-- Search Bar -->
-          <div class="input-group mb-2 justify-content-between">
-            <section class="my-2 mr-auto">
-              <h5 class="bg-success px-1 py-1 d-inline-block rounded text-white text-2xs">Count: <%= books.length %></h5>
-            </section>
-            <form action="/report/books" method="post">
-              <div class="input-group mx-2">
-                <input type="search" name="search" class="form-control rounded-start" style="width: 300px;" placeholder="Search name in here...">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-search "></i> Search</button>
-              </div>
-            </form>
-            <form action="/filter" method="post">
-              <div class="input-group">
-                <button type="submit" class="btn btn-primary"><i class="bi bi-filter"></i></button>
-              </div>
-            </form>
-          </div>
-          
-        <!-- Table of data -->
-        <table
-          class="table table-bordered"
-          style="vertical-align: middle"
-          id="dataTable"
-          width="100%"
-          cellspacing="0"
-        >
-        <% if(books.length > 0){ %>
-          <thead class="thead-dark">
-            <tr class="text-center">
-              <th>No</th>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Publisher</th>
-              <th>Year</th>
-              <th>Genre</th>
-              <th>Stock</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% for(let i = 0; i < books.length; i++){ %>
-            <tr>
-              <td class="text-center"><%= i +1 %></td>
-              <td><%= books[i].title %></td>
-              <td><%= books[i].author %></td>
-              <td><%= books[i].publisher %></td>
-              <td><%= books[i].publicationYear %></td>
-              <td><%= books[i].genre%></td>
-              <td><%= books[i].stock%></td>
-              <td>Rp.<%= books[i].price %></td>
-            </tr>
             <% } %>
-            <% } else { %>
-                <h6 class="px-6 py-4 text-center">Data not found</h6>
-              <% } %>
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </div>
-<%- include('../partials/js.ejs') %>
-</body>
+          </div>
 
+          <!-- Search Bar -->
+          <div class="input-group mb-0 justify-content-between">
+            <section class="my-2 mr-auto">
+              <h5
+                class="bg-secondary px-1 py-1 d-inline-block rounded text-white text-2xs"
+              >
+                Result: <%= books.length %>
+              </h5>
+            </section>
+            <form id="filterForm" action="/report/books" method="post">
+              <div class="input-group mx-2 mr-auto">
+                <input
+                  type="search"
+                  name="search"
+                  class="form-control rounded-start"
+                  style="width: 300px"
+                  placeholder="Search name in here..."
+                />
+                <div class="input-group-append mr-1">
+                  <button type="submit" class="btn btn-secondary">
+                    <i class="fa fa-search mr-auto"></i> Search
+                  </button>
+                </div>
+              </div>
+              <div
+                class="modal fade"
+                id="filterModal"
+                data-bs-keyboard="false"
+                tabindex="-1"
+              >
+                <div
+                  class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+                >
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title mb-3 fs-5">Filter</h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="form-group">
+                        <label for="title" class="fw-bold">Genre</label>
+                        <div>
+                          <div class="form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="genre1"
+                              name="genre"
+                              value="Fantasy"
+                              <% if (selectedGenres.includes("Fantasy")) { %> checked <% } %> 
+                            />
+                            <label
+                              class="form-check-label"
+                              for="genre1"
+                              class="fw-bold"
+                              >Fantasy</label
+                            >
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="genre2"
+                              name="genre"
+                              value="Science Fiction"
+                              <% if (selectedGenres.includes("Science Fiction")) { %> checked <% } %> 
+                            />
+                            <label
+                              class="form-check-label"
+                              for="genre2"
+                              class="fw-bold"
+                              >Science Fiction</label
+                            >
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="genre3"
+                              name="genre"
+                              value="Mystery"
+                              <% if (selectedGenres.includes("Mystery")) { %> checked <% } %> 
+                            />
+                            <label
+                              class="form-check-label"
+                              for="genre3"
+                              class="fw-bold"
+                              >Mystery</label
+                            >
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="genre4"
+                              name="genre"
+                              value="Horror"
+                              <% if (selectedGenres.includes("Horror")) { %> checked <% } %> 
+                            />
+                            <label
+                              class="form-check-label"
+                              for="genre4"
+                              class="fw-bold"
+                              >Horror</label
+                            >
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="genre5"
+                              name="genre"
+                              value="Comedy"
+                              <% if (selectedGenres.includes("Comedy")) { %> checked <% } %> 
+                            />
+                            <label
+                              class="form-check-label"
+                              for="genre5"
+                              class="fw-bold"
+                              >Comedy</label
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="book">Author</label>
+                        <select name="author" class="form-select">
+                          <option value="">Select an author</option>
+                          <% allBooks.forEach((book) => { %>
+                          <option value="<%= book.author %>"><%= book.author %></option>
+                          <% }); %>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="book">Publisher</label>
+                        <select name="publisher" class="form-select">
+                          <option value="">Select a publisher</option>
+                          <% allBooks.forEach((book) => { %>
+                          <option value="<%= book.publisher %>"><%= book.publisher %></option>
+                          <% }); %>
+                        </select>
+                      </div>
+                        <div class="form-group">
+                          <label for="stockType" class="fw-bold">Stock</label>
+                          <select id="stockType" name="stockType" class="form-control">
+                            <option value="specific">Specific Amount</option>
+                            <option value="range">Range</option>
+                          </select>
+                        </div>            
+                        <div id="specificAmountField" class="form-group">
+                          <label for="specificAmount" class="fw-bold">Specific Amount</label>
+                          <input type="number" id="specificAmount" name="specificAmount" class="form-control" placeholder="Enter specific amount" />
+                        </div>                   
+                        <div id="rangeFields">
+                          <div class="form-group">
+                            <label for="minStock" class="fw-bold">Minimum Stock</label>
+                            <input type="number" id="minStock" name="minStock" class="form-control" placeholder="Enter minimum stock" />
+                          </div>                    
+                          <div class="form-group">
+                            <label for="maxStock" class="fw-bold">Maximum Stock</label>
+                            <input type="number" id="maxStock" name="maxStock" class="form-control" placeholder="Enter maximum stock" />
+                          </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="yearType" class="fw-bold">Year</label>
+                          <select id="yearType" name="yearType" class="form-control">
+                            <option value="specific">Specific year</option>
+                            <option value="range">Range</option>
+                          </select>
+                        </div>            
+                        <div id="specificYearField" class="form-group">
+                          <label for="specificYear" class="fw-bold">Specific Year</label>
+                          <input type="number" id="specificYear" name="specificYear" class="form-control" placeholder="Enter specific year" />
+                        </div>                   
+                        <div id="rangeYear">
+                          <div class="form-group">
+                            <label for="minYear" class="fw-bold">Minimum Year</label>
+                            <input type="number" id="minYear" name="minYear" class="form-control" placeholder="Enter minimum Year" />
+                          </div>                    
+                          <div class="form-group">
+                            <label for="maxYear" class="fw-bold">Maximum Year</label>
+                            <input type="number" id="maxYear" name="maxYear" class="form-control" placeholder="Enter maximum year" />
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="priceType" class="fw-bold">Price</label>
+                          <select id="priceType" name="priceType" class="form-control">
+                            <option value="specific">Specific Price</option>
+                            <option value="range">Range</option>
+                          </select>
+                        </div>            
+                        <div id="specificPriceField" class="form-group">
+                          <label for="specificPrice" class="fw-bold">Specific Price</label>
+                          <input type="number" id="specificPrice" name="specificPrice" class="form-control" placeholder="Enter specific price" />
+                        </div>                   
+                        <div id="rangePrice">
+                          <div class="form-group">
+                            <label for="minPrice" class="fw-bold">Minimum Price</label>
+                            <input type="number" id="minPrice" name="minPrice" class="form-control" placeholder="Enter minimum Price" />
+                          </div>                    
+                          <div class="form-group">
+                            <label for="maxPrice" class="fw-bold">Maximum Price</label>
+                            <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="Enter maximum Price" />
+                          </div>
+                        </div>      
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Back
+                        </button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="applyFilters()">Apply</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="input-group-append">
+              <button
+                class="btn btn-secondary mx-2 rounded bi bi-filter mb-auto"
+                data-bs-toggle="modal"
+                data-bs-target="#filterModal"
+              ></button>
+            </div>
+          </div>
+
+          <!-- Table of data -->
+          <table
+            class="table table-bordered"
+            style="vertical-align: middle"
+            id="dataTable"
+            width="100%"
+            cellspacing="0"
+          >
+            <% if(books.length > 0){ %>
+            <thead class="thead-dark">
+              <tr class="text-center">
+                <th>No</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publisher</th>
+                <th>Year</th>
+                <th>Genre</th>
+                <th>Stock</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let i = 0; i < books.length; i++){ %>
+              <tr>
+                <td class="text-center"><%= i +1 %></td>
+                <td><%= books[i].title %></td>
+                <td><%= books[i].author %></td>
+                <td><%= books[i].publisher %></td>
+                <td><%= books[i].publicationYear %></td>
+                <td><%= books[i].genre%></td>
+                <td><%= books[i].stock%></td>
+                <td>Rp.<%= books[i].price %></td>
+              </tr>
+              <% } %> <% } else { %>
+              <h6 class="px-6 py-4 text-center">Data not found</h6>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+    <%- include('../partials/js.ejs') %>
+
+    <script>
+        function applyFilters() {
+        const selectedGenres = Array.from(document.querySelectorAll('input[name="genre"]:checked')).map(checkbox => checkbox.value);
+        }
+    </script>
+  </body>
 </html>
