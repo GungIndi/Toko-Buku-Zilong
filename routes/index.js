@@ -12,21 +12,16 @@ router.get('/',ensureAuthenticated.ensureAuthenticated,(req, res) => {
         });
 }); 
 
-// router.get('/dashboard',ensureAuthenticated,(req,res)=>{
-//     res.render('dashboard',{
-//     user: req.user
-//     });
-// });
-
-
 const auth = require("./auth");
 const books = require("./books");
 const users = require("./users");
 const transactions = require("./transactions");
+const report = require("./report");
 
 router.use("/", auth);
 router.use("/books", books);
 router.use("/users", users);
 router.use("/transactions", transactions);
+router.use("/report", report);
 
 module.exports = router;
