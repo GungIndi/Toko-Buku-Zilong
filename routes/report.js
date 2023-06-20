@@ -2,7 +2,12 @@ var router = require("express").Router();
 const ensureAuthenticated = require("../config/requireAuth.js");
 // const reportController =  require("../controllers/reportController");
 const Books = require("../models/Book");
+const Transactions = require("../models/Transaction.js");
 const Users = require("../models/User");
+const moment = require("moment");
+const mongoose = require("mongoose");
+const { query } = require("express");
+
 let actionUrl;
 
 // REPORTS
@@ -139,6 +144,7 @@ router.get('/users',ensureAuthenticated.ensureAuthenticatedAdmin, async (req, re
         name: req.user.name
         });
 }); 
+
 router.post('/users',ensureAuthenticated.ensureAuthenticatedAdmin, async (req, res) => {
     const searchResult = req.body.search;
     const selectedType = req.body.userType;
@@ -159,7 +165,6 @@ router.post('/users',ensureAuthenticated.ensureAuthenticatedAdmin, async (req, r
           { address: new RegExp('^' + searchResult, 'i') },
         ]
       };
-
     if (selectedType) {
         queryConditions.userType = selectedType;
     }
@@ -183,5 +188,106 @@ router.post('/users',ensureAuthenticated.ensureAuthenticatedAdmin, async (req, r
         name: req.user.name
         });
 }); 
+
+router.get('/transactions',ensureAuthenticated.ensureAuthenticatedAdmin, async (req, res) => {
+    const transactions = await Transactions.find();
+    const users = await Users.find();
+    const books = await Books.find();
+
+    res.render('report/transactionReport',{
+        user: req.user,
+        users,
+        transactions,
+        moment,
+        books,
+        allBooks: books,
+        title: "REPORT",
+        userType: req.user.userType,
+        name: req.user.name
+        });
+}); 
+
+router.post('/transactions', ensureAuthenticated.ensureAuthenticatedAdmin, async (req, res) => {
+  try {
+    const allBooks = await Books.find();
+    const users = await Users.find();
+
+    const selectedAdmin = req.body.adminId;
+    const selectedMember = req.body.memberId;
+    const selectedBook = req.body.bookId;
+    const selectedTimeStamp = req.body.timeStamp;
+    const selectedPriceType = req.body.priceType;
+    const specificPrice = req.body.specificPrice;
+    const minPrice = req.body.minPrice;
+    const maxPrice = req.body.maxPrice;
+
+    const queryConditions = {};
+
+    if (selectedAdmin) {
+      queryConditions.adminId = selectedAdmin;
+    }
+
+    if (selectedMember) {
+      queryConditions.memberId = selectedMember;
+    }
+
+    if (selectedBook) {
+      queryConditions.bookId = selectedBook;
+    }
+
+    if (selectedTimeStamp === 'specific') {
+      const specificTimeStamp = req.body.timestamp;
+      if (specificTimeStamp) {
+        queryConditions.timestamp = specificTimeStamp;
+      }
+    } else if (selectedTimeStamp === 'range') {
+      const minTimeStamp = req.body.minTimeStamp;
+      const maxTimeStamp = req.body.maxTimeStamp;
+      if (minTimeStamp && maxTimeStamp) {
+        queryConditions.timestamp = {
+          $gte: minTimeStamp,
+          $lte: maxTimeStamp
+        };
+      }
+    }
+
+    if (selectedPriceType === 'specific') {
+      if (specificPrice) {
+        queryConditions.totalPrice = specificPrice;
+      }
+    } else if (selectedPriceType === 'range') {
+      if (minPrice && maxPrice) {
+        queryConditions.totalPrice = {
+          $gte: minPrice,
+          $lte: maxPrice
+        };
+      }
+    }
+    console.log(queryConditions);
+    const transactions = await Transactions.find(queryConditions)
+      .populate("memberId", "name")
+      .populate("adminId", "name")
+      .exec();
+
+    res.render('report/transactionReport', {
+      user: req.user,
+      transactions,
+      moment,
+      allBooks,
+      books: allBooks,
+      users,
+      title: "REPORT",
+      userType: req.user.userType,
+      name: req.user.name
+    });
+  } catch (err) {
+    // Handle any errors that occur during the process
+    console.error(err);
+    // Render an error page or show an error message to the user
+    res.render('error', { error: err });
+  }
+});
+
+
 
 module.exports = router;

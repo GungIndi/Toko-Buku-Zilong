@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head.ejs', { title }) %>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Initially hide the specific amount and range fields
+      $('#rangePrice').hide();
+      $('#rangeTimeStamp').hide();
+
+      // Listen for changes in the stock type select field
+      $('#priceType').change(function() {
+        var selectedOption = $(this).val();
+        // Show/hide the specific amount and range fields based on the selected option
+        if (selectedOption === 'specific') {
+          $('#specificPriceField').show();
+          $('#rangePrice').hide();
+        } else if (selectedOption === 'range') {
+          $('#specificPriceField').hide();
+          $('#rangePrice').show();
+        }
+      });
+
+      $('#timeStamp').change(function() {
+        var selectedOption = $(this).val();
+        // Show/hide the specific amount and range fields based on the selected option
+        if (selectedOption === 'specific') {
+          $('#specificTimeStamp').show();
+          $('#rangeTimeStamp').hide();
+        } else if (selectedOption === 'range') {
+          $('#specificTimeStamp').hide();
+          $('#rangeTimeStamp').show();
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="d-flex">
+    <%- include('../partials/sidebar.ejs', { userType }) %>
+    <main class="d-flex flex-column align-items-center" style="width: 100%">
+      <h1 class="fw-bold my-3"><%= title %></h1>
+      <div class="table-container" style="width: 80%">
+        <!-- Alert -->
+        <div class="col-auto col-lg-12 mt-2">
+          <% if (typeof alertMessage !== 'undefined' && typeof alertStatus !== 'undefined') { %>
+          <div class="alert alert-<%= alertStatus %>">
+            <%= alertMessage %>
+          </div>
+          <% } %>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="input-group mb-0 justify-content-between">
+          <section class="my-2 mr-auto">
+            <h5 class="bg-secondary px-1 py-1 d-inline-block rounded text-white text-2xs">
+              Result: <%= transactions.length %>
+            </h5>
+          </section>
+          <form id="filterForm" action="/report/transactions" method="post">
+            <div class="modal fade" id="filterModal" data-bs-keyboard="false" tabindex="-1">
+              <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title mb-3 fs-5">Filter</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="form-group">
+                      <label for="admin">Admin</label>
+                      <select name="adminId" class="form-select">
+                        <option value="">Select an admin</option>
+                        <% users.forEach((user) => { if (user.userType === 'Admin') { %>
+                        <option value="<%= user._id %>"><%= user.name %></option>
+                        <%} }); %>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="member">Member</label>
+                      <select name="memberId" class="form-select">
+                        <option value="">Select a member</option>
+                        <% users.forEach((user) => { if (user.userType === 'Member') { %>
+                        <option value="<%= user._id %>"><%= user.name %></option>
+                        <%} }); %>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="book">Book</label>
+                      <select name="bookId" class="form-select">
+                        <option value="">Select a book</option>
+                        <% allBooks.forEach((book) => { %>
+                        <option value="<%= book._id %>"><%= book.title %></option>
+                        <%}); %>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="timeStamp" class="fw-bold">Time Stamp</label>
+                      <select id="timeStamp" name="timeStamp" class="form-control">
+                        <option value="specific">Specific Time Stamp</option>
+                        <option value="range">Range</option>
+                      </select>
+                    </div>
+                    <div id="specificTimeStamp" class="form-group">
+                      <label for="specificTimestamp" class="fw-bold">Specific</label>
+                      <input type="datetime-local" class="form-control" id="specificTimestamp" name="specificTimestamp" placeholder="Value" step="1" />
+                    </div>
+                    <div id="rangeTimeStamp">
+                      <div class="form-group">
+                        <label for="minTimestamp" class="fw-bold">Range Min</label>
+                        <input type="datetime-local" class="form-control" id="minTimestamp" name="minTimestamp" placeholder="Value" step="1" />
+                      </div>
+                      <div class="form-group">
+                        <label for="maxTimestamp" class="fw-bold">Range Max</label>
+                        <input type="datetime-local" class="form-control" id="maxTimestamp" name="maxTimestamp" placeholder="Value" step="1" />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="priceType" class="fw-bold">Total Price</label>
+                      <select id="priceType" name="priceType" class="form-control">
+                        <option value="specific">Specific Total Price</option>
+                        <option value="range">Range</option>
+                      </select>
+                    </div>
+                    <div id="specificPriceField" class="form-group">
+                      <label for="specificPrice" class="fw-bold">Specific Total Price</label>
+                      <input type="number" id="specificPrice" name="specificPrice" class="form-control" placeholder="Enter specific price" />
+                    </div>
+                    <div id="rangePrice">
+                      <div class="form-group">
+                        <label for="minPrice" class="fw-bold">Minimum Total Price</label>
+                        <input type="number" id="minPrice" name="minPrice" class="form-control" placeholder="Enter minimum price" />
+                      </div>
+                      <div class="form-group">
+                        <label for="maxPrice" class="fw-bold">Maximum Total Price</label>
+                        <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="Enter maximum price" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="submit" class="btn btn-primary">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="input-group-append">
+            <button class="btn btn-secondary mx-2 rounded bi bi-filter mb-auto" data-bs-toggle="modal" data-bs-target="#filterModal"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table of data -->
+      <table class="table table-bordered" style="vertical-align: middle" id="dataTable" width="100%" cellspacing="0">
+        <% try { %> <% if (transactions.length > 0) { %>
+        <thead class="thead-dark">
+          <tr class="text-center">
+            <th>No</th>
+            <th>Member</th>
+            <th>Admin</th>
+            <th>Details</th>
+            <th>Total Price</th>
+            <th>Time Stamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% transactions.forEach((transaction, i) => { %>
+          <tr>
+            <td><%= i + 1 %></td>
+            <td><%= transaction.memberId.name %></td>
+            <td><%= transaction.adminId.name %></td>
+            <td class="text-center">           
+              <button
+                class="btn btn-link btn-details"
+                data-toggle="modal"
+                data-target="#details-modal-<%= i %>"
+              >
+                View Details
+              </button>
+              <!-- Include the modal file -->
+              <%- include('../transactions/detailTransaction.ejs', { i,transaction: transactions[i], book: books[i]}) %>
+            </td>
+            <td><%= transaction.totalPrice %></td>
+            <td><%= moment(transaction.timestamp).format('YYYY-MM-DD HH:mm:ss') %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+        <% } else { %>
+        <p>No transactions found.</p>
+        <% } %> <% } catch (error) { %>
+        <p>Error occurred while rendering transactions: <%= error.message %></p>
+        <% } %>
+      </table>
+    </div>
+  </main>
+</div>
+<%- include('../partials/js.ejs') %>
+</body>
+</html>

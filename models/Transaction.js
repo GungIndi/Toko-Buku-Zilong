@@ -4,16 +4,19 @@ const transactionSchema = mongoose.Schema(
   {
     memberId: {
       type: mongoose.ObjectId,
+      ref:"User",
       required: true,
     },
     adminId: {
       type: mongoose.ObjectId,
+      ref:"User",
       required: true,
     },
     details: [
       {
         bookId: {
           type: mongoose.ObjectId,
+          ref:"Book",
           required: true,
         },
         price: {
